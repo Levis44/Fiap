@@ -1,0 +1,34 @@
+body {
+  background-color: #28526c;
+}
+
+.centralizar {
+  width: 100vw;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pop-up {
+  background-color: #002237;
+  border-radius: 20px;
+  padding: 30px;
+  width: 500px;
+  margin: 0 20px;
+  font-size: 20px;
+}
+
+.pop-up p {
+  color: white;
+  text-align: center;
+}
+
+.pop-up a {
+  color: white;
+  text-decoration: none;
+}
+
+.pop-up a:hover {
+  color: #ff3131;
+}

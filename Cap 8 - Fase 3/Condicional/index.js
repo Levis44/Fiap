@@ -14,21 +14,19 @@
    Platinum -> 5%
  */
 
+const assinaturaInput = document.getElementById("assinatura");
+const faturamentoInput = document.getElementById("faturamento_anual");
+const botao = document.getElementById("botao");
 
-
-window.onload = {
-  assinaturaInput = document.getElementById("assinatura"),
-  faturamentoInput = document.getElementById("faturamento_anual"),
-  botao = document.getElementById("botao"),
-};
+botao.onclick = calcularBonus(assinaturaInput.selectedIndex, faturamentoInput);
 
 function calcularBonus(assinatura, faturamento) {
-  const porcentagem = calcularBonus(assinatura);
+  const porcentagem = calcularPorcentagem(assinatura);
 
   console.log((faturamento * porcentagem) / 100);
 
   return (faturamento * porcentagem) / 100;
-};
+}
 
 function calcularPorcentagem(assinatura) {
   if (assinatura === 0) return 30;

@@ -1,21 +1,3 @@
-/**
- *  Muitos professores preferem adotar modelos diferentes de provas quando dão aulas para turmas muito grandes.
- *  Por essa razão, a escola de inglês JoWell Sant’ana, em que todas as turmas são compostas por 50 alunos, solicitou
- *  que você criasse um sistema capaz de atender ao seguinte requisito: o professor deve digitar primeiro as notas dos 
- *  25 alunos que tem número ímpar na chamada (1, 3, 5, ..., 47, 49) e, depois, as notas dos 25 alunos que tem número par
- *  (2, 4, 6,..., 48, 50). O sistema deve calcular e exibir a média de cada uma das metades da sala e informar,
- *  ao final, qual delas teve a maior nota.
-
-    Há ainda um pedido especial do mantenedor: para que os professores não se confundam ao digitar cada uma das notas,
-    deve ser exibida uma mensagem no seguinte padrão:
-
-    VOCÊ ESTÁ DIGITANDO AS NOTAS DOS ALUNOS PARES (ou ímpares, quando for o caso).
-
-    POR FAVOR, INSIRA A NOTA DO ALUNO DE NÚMERO X.
- */
-
-// criar array
-
 const button = document.getElementById("botao");
 const enviar = document.getElementById("botaoEnviar");
 
@@ -63,26 +45,20 @@ function lancarNotas() {
 }
 
 function impar() {
-  const aluno = alunosImpar[indexImpar];
+  let aluno;
+  if (indexImpar == 1) {
+    aluno = alunosImpar[0];
+  } else {
+    aluno = alunosImpar[indexImpar - 1];
+  }
 
   const idAluno = aluno.id;
 
-  console.log(indexImpar);
-  console.log(idAluno);
-
-  if (indexImpar !== 0) {
-    colocartexto("Ímpares", idAluno + 2);
-    atribuirNota(aluno);
-
-    indexImpar++;
-    return;
-  }
-
   colocartexto("Ímpares", idAluno);
+
   atribuirNota(aluno);
 
   indexImpar++;
-  return;
 }
 
 function par() {

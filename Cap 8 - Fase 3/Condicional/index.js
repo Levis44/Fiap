@@ -18,19 +18,28 @@ const assinaturaInput = document.getElementById("assinatura");
 const faturamentoInput = document.getElementById("faturamento_anual");
 const botao = document.getElementById("botao");
 
-botao.onclick = calcularBonus(assinaturaInput.selectedIndex, faturamentoInput);
+function calcularBonus() {
+  const index = assinaturaInput.selectedIndex;
+  const faturamento = faturamentoInput.value;
 
-function calcularBonus(assinatura, faturamento) {
-  const porcentagem = calcularPorcentagem(assinatura);
+  const porcentagem = calcularPorcentagem(index);
 
-  console.log((faturamento * porcentagem) / 100);
+  const bonus = (faturamento * porcentagem) / 100;
 
-  return (faturamento * porcentagem) / 100;
+  const layout = `
+  
+  <h3>Você deverá pagar: R$${bonus}</h3>
+  
+  `;
+
+  const result = document.getElementById("result");
+
+  result.innerHTML = layout;
 }
 
-function calcularPorcentagem(assinatura) {
-  if (assinatura === 0) return 30;
-  if (assinatura === 1) return 20;
-  if (assinatura === 2) return 10;
-  if (assinatura === 3) return 10;
+function calcularPorcentagem(index) {
+  if (index === 0) return 30;
+  if (index === 1) return 20;
+  if (index === 2) return 10;
+  if (index === 3) return 5;
 }

@@ -1,15 +1,15 @@
-function pegarMinutosAtual() {
-  var timestamp = new Date();
-  const minutes = timestamp.getMinutes();
+const button = document.getElementById("botao");
 
-  const fatorialPronto = makeFatorial(minutes);
+button.onclick = () => {
+  const input = document.getElementById("input");
+  const minutes = input.value;
 
-  pegarSenha(fatorialPronto);
+  const factorial = makeFactorial(minutes);
 
-  console.log(fatorialPronto);
-}
+  showPassword(factorial);
+};
 
-function makeFatorial(number) {
+function makeFactorial(number) {
   var fatorial = 1;
 
   var i = number;
@@ -21,15 +21,12 @@ function makeFatorial(number) {
   return fatorial;
 }
 
-function pegarSenha(fatorial) {
+function showPassword(factorial) {
   const layout = `
-  <h1>Sua Senha é: LIBERDADE${fatorial}</h1>
+  <h1>Sua Senha é: LIBERDADE${factorial}</h1>
   `;
 
-  const senha = document.getElementById("senha");
+  const result = document.getElementById("result");
 
-  senha.innerHTML = layout;
+  result.innerHTML = layout;
 }
-
-pegarMinutosAtual();
-setInterval(pegarMinutosAtual, 1000);

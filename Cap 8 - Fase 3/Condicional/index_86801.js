@@ -26,6 +26,10 @@ function calcularBonus() {
 
   const bonus = (faturamento * porcentagem) / 100;
 
+  exibirResultado(bonus);
+}
+
+function exibirResultado(bonus) {
   const layout = `
   
   <h3>Você deverá pagar: R$${bonus}</h3>

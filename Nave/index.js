@@ -1,33 +1,58 @@
-var canvas = document.getElementById("minha-tela");
-var ctx = canvas.getContext("2d");
-//definir o ínicio do desenho
-var x = 0;
-var y = 150;
-//a função gameloop é chamada aqui
-requestAnimationFrame(gameloop);
 
-window.onkeydown = pressionaTecla;
-function pressionaTecla(tecla) {
-  if (tecla.keyCode == 38) {
-    y = y - 20; //diminuir y tem o efeito de subida
-  }
-  if (tecla.keyCode == 40) {
-    y = y + 20; //aumentar y tem o efeito de descer
-  }
-  if (tecla.keyCode == 39) {
-    x = x + 20; //aumentar o x tem o efeito de ir para a direita
-  }
-  if (tecla.keyCode == 37) {
-    x = x - 20; //diminuir o x tem o efeito de ir para a esquerda
-  }
-}
-function gameloop() {
-  desenharQuadrado(x, y);
-  //chama novamente o ciclo da animação
-  requestAnimationFrame(gameloop);
-}
-function desenharQuadrado(pX, pY) {
-  ctx.clearRect(0, 0, 800, 400); //antes de fazer o desenho é preciso limpar o canvas
-  ctx.fillStyle = "#00F";
-  ctx.fillRect(pX, pY, 100, 100);
-}
+		
+	var canvas = document.getElementById("minha-tela");
+	var context = canvas.getContext("2d");
+	 //Dados do quadrado vermelho
+     var x_vermelho = 0;
+     var y_vermelho = 200;
+     var largura_vermelho = 50;
+     var altura_vermelho = 50;
+    //Dados do quadrado azul
+     var x_azul = 700;
+     var y_azul = 200;
+     var largura_azul = 50;
+     var altura_azul = 50;
+     
+	 //executa o gameloop a cada ciclo do navegador
+     requestAnimationFrame(gameloop);
+     function detectarColisao()
+     {
+         if( ( (x_vermelho + largura_vermelho) >  x_azul &amp;&amp; x_vermelho < (x_azul + 
+    largura_azul) ) &amp;&amp; ( (y_vermelho + altura_vermelho) > y_azul &amp;&amp; y_vermelho < (y_azul + altura_azul) 
+) )
+         {
+          //interrompe o game loop parando a movimentação dos quadrados
+          alert("game over");
+         }
+		 else {
+			//chama novamente o ciclo da animação
+			requestAnimationFrame(gameloop);
+		 }
+     }
+      
+	 
+     function gameloop()
+     {
+         desenharQuadrado(x_vermelho,y_vermelho);
+		 desenharQuadrado(x_azul,y_azul);
+		 detectarColisao();
+		
+     }
+     
+	 function desenharQuadrado()
+     {
+         //limpa todo o Canvas
+         context.clearRect(0, 0, 800, 400); 
+         //Definindo a cor vermelha
+         context.fillStyle = "rgb(255,0,0)";
+  		 //desenha o quadrado vermelho
+         context.fillRect(x_vermelho, y_vermelho,  largura_vermelho, altura_vermelho); 
+         //Definindo a cor azul
+         context.fillStyle = "rgb(0,0,255)";
+         //desenha o quadrado azul
+         context.fillRect(x_azul, y_azul, largura_azul, altura_azul); 
+         //para movimentar o quadrado vermelho
+         x_azul = x_azul - 5; 
+		 x_vermelho = x_vermelho + 5; 
+      }
+

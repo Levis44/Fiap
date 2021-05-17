@@ -1,58 +1,94 @@
+const canvas = document.getElementById("tela");
+const ctx = canvas.getContext("2d");
 
-		
-	var canvas = document.getElementById("minha-tela");
-	var context = canvas.getContext("2d");
-	 //Dados do quadrado vermelho
-     var x_vermelho = 0;
-     var y_vermelho = 200;
-     var largura_vermelho = 50;
-     var altura_vermelho = 50;
-    //Dados do quadrado azul
-     var x_azul = 700;
-     var y_azul = 200;
-     var largura_azul = 50;
-     var altura_azul = 50;
-     
-	 //executa o gameloop a cada ciclo do navegador
-     requestAnimationFrame(gameloop);
-     function detectarColisao()
-     {
-         if( ( (x_vermelho + largura_vermelho) >  x_azul &amp;&amp; x_vermelho < (x_azul + 
-    largura_azul) ) &amp;&amp; ( (y_vermelho + altura_vermelho) > y_azul &amp;&amp; y_vermelho < (y_azul + altura_azul) 
-) )
-         {
-          //interrompe o game loop parando a movimentação dos quadrados
-          alert("game over");
-         }
-		 else {
-			//chama novamente o ciclo da animação
-			requestAnimationFrame(gameloop);
-		 }
-     }
-      
-	 
-     function gameloop()
-     {
-         desenharQuadrado(x_vermelho,y_vermelho);
-		 desenharQuadrado(x_azul,y_azul);
-		 detectarColisao();
-		
-     }
-     
-	 function desenharQuadrado()
-     {
-         //limpa todo o Canvas
-         context.clearRect(0, 0, 800, 400); 
-         //Definindo a cor vermelha
-         context.fillStyle = "rgb(255,0,0)";
-  		 //desenha o quadrado vermelho
-         context.fillRect(x_vermelho, y_vermelho,  largura_vermelho, altura_vermelho); 
-         //Definindo a cor azul
-         context.fillStyle = "rgb(0,0,255)";
-         //desenha o quadrado azul
-         context.fillRect(x_azul, y_azul, largura_azul, altura_azul); 
-         //para movimentar o quadrado vermelho
-         x_azul = x_azul - 5; 
-		 x_vermelho = x_vermelho + 5; 
-      }
+// let x = 0;
+// let y = 150;
 
+// let placar = 0;
+// let hit = false;
+
+// requestAnimationFrame(gameloop);
+// function gameloop() {
+//   if (x <= 700) {
+//     desenharQuadrado(x, y);
+//   } else {
+//     clearTimeout();
+//   }
+
+//   x += 10;
+//   requestAnimationFrame(gameloop);
+// }
+
+// function desenharQuadrado(pX, pY) {
+//   ctx.clearRect(0, 0, 800, 400);
+//   let img = new Image();
+//   img.src = "./nave.png";
+
+//   ctx.createPattern(img, "repeat");
+//   ctx.fillRect(pX, pY, 100, 100);
+// }
+
+// ---------------------------------------------------------------------------
+let x = 0;
+let y = 150;
+let image = "nave-cima.png";
+//a função gameloop é chamada aqui
+requestAnimationFrame(gameloop);
+
+window.onkeydown = pressionaTecla;
+function pressionaTecla(tecla) {
+  if (tecla.keyCode == 38) {
+    image = "nave-cima.png";
+    y = y - 5; //diminuir y tem o efeito de subida
+  }
+  if (tecla.keyCode == 40) {
+    image = "nave-baixo.png";
+    y = y + 5; //aumentar y tem o efeito de descer
+  }
+  if (tecla.keyCode == 39) {
+    image = "nave-direita.png";
+    x = x + 5; //aumentar o x tem o efeito de ir para a direita
+  }
+  if (tecla.keyCode == 37) {
+    image = "nave-esquerda.png";
+    x = x - 5; //diminuir o x tem o efeito de ir para a esquerda
+  }
+}
+
+function gameloop() {
+  desenharNave(x, y);
+
+  //chama novamente o ciclo da animação
+  requestAnimationFrame(gameloop);
+}
+
+function desenharNave(pX, pY) {
+  ctx.clearRect(0, 0, 800, 400); //antes de fazer o desenho é preciso limpar o canvas
+  ctx.fillStyle = "#00F";
+
+  const imagem = new Image();
+  imagem.src = image;
+  ctx.drawImage(imagem, pX, pY);
+}
+
+// ----------------------------------------------------------------------------
+// ASTEROIDES ALEATORIOS
+
+// var fps = 1;
+// // var fps = 1 / 3;
+// var xQ, yQ;
+// function desenharQ() {
+//   setTimeout(function () {
+//     requestAnimationFrame(desenharQ);
+//     // Drawing code goes here
+//     console.log(xQ + " - " + yQ);
+//     ctx.clearRect(xQ, yQ, 30, 30);
+//     xQ = Math.floor(Math.random() * canvas.width);
+//     yQ = Math.floor(Math.random() * canvas.height);
+//     ctx.fillStyle = "red";
+//     ctx.fillRect(xQ, yQ, 30, 30);
+//   }, 1000 / fps);
+// }
+
+// ASTEROIDES ALEATORIOS
+// ----------------------------------------------------------------------------

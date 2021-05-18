@@ -81,6 +81,10 @@ class Keyboard {
 
 // ---------------------------------------------------------------------------
 //a função gameloop é chamada aqui
+
+var fps = 1 / 3;
+var xQ, yQ;
+
 requestAnimationFrame(gameloop);
 function gameloop() {
   window.onkeydown = Keyboard.handleKeyDown;
@@ -89,6 +93,16 @@ function gameloop() {
   const y = Nave.y;
   Nave.desenharNave(x, y);
 
+  // setTimeout(function () {
+  //   // Drawing code goes here
+  //   console.log(xQ + " - " + yQ);
+  //   ctx.clearRect(xQ, yQ, 30, 30);
+  //   xQ = Math.floor(Math.random() * canvas.width);
+  //   yQ = Math.floor(Math.random() * canvas.height);
+  //   ctx.fillStyle = "red";
+  //   ctx.fillRect(xQ, yQ, 30, 30);
+  // }, 1000 / fps);
+
   //chama novamente o ciclo da animação
   requestAnimationFrame(gameloop);
 }
@@ -96,22 +110,21 @@ function gameloop() {
 // ----------------------------------------------------------------------------
 // ASTEROIDES ALEATORIOS
 
-var fps = 1;
 // var fps = 1 / 3;
-var xQ, yQ;
-function desenharQ() {
-  setTimeout(function () {
-    requestAnimationFrame(desenharQ);
-    // Drawing code goes here
-    console.log(xQ + " - " + yQ);
-    ctx.clearRect(xQ, yQ, 30, 30);
-    xQ = Math.floor(Math.random() * canvas.width);
-    yQ = Math.floor(Math.random() * canvas.height);
-    ctx.fillStyle = "red";
-    ctx.fillRect(xQ, yQ, 30, 30);
-  }, 1000 / fps);
-}
-desenharQ();
+// var xQ, yQ;
+// function desenharQ() {
+//   setTimeout(function () {
+//     requestAnimationFrame(desenharQ);
+//     // Drawing code goes here
+//     console.log(xQ + " - " + yQ);
+//     ctx.clearRect(xQ, yQ, 30, 30);
+//     xQ = Math.floor(Math.random() * canvas.width);
+//     yQ = Math.floor(Math.random() * canvas.height);
+//     ctx.fillStyle = "red";
+//     ctx.fillRect(xQ, yQ, 30, 30);
+//   }, 1000 / fps);
+// }
+// desenharQ();
 
 // ASTEROIDES ALEATORIOS
 // ----------------------------------------------------------------------------

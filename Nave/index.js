@@ -17,26 +17,7 @@ class ClassNave {
   }
 
   removeSpaceShip() {
-    // if (this.image == "nave-cima.png" || this.image == "nave-baixo.png") {
-    //   ctx.clearRect(this.x, this.y, 50, 99);
-    // } else {
-    //   ctx.clearRect(this.x, this.y, 99, 50);
-    // }
-    // console.log(this.y, this.x);
-    if (this.image == "nave-cima.png") {
-      ctx.clearRect(this.x, this.y - 20, 50, 99);
-    }
-    if (this.image == "nave-baixo.png") {
-      ctx.clearRect(this.x, this.y - 20, 60, 119);
-    }
-    if (this.image == "nave-direita.png") {
-      ctx.clearRect(this.x - 20, this.y, 100, 119);
-    }
-    if (this.image == "nave-esquerda.png") {
-      ctx.clearRect(this.x, this.y, 100, 119);
-    }
-    // ctx.clearRect(this.x, this.y - 70, 60, 119);
-    // console.log(this.x, this.y);
+    ctx.clearRect(this.x, this.y, 60, 60);
   }
 }
 const Nave = new ClassNave();
@@ -59,6 +40,8 @@ class ClassAsteroid {
 
 class Keyboard {
   static ArrowUp() {
+    Nave.removeSpaceShip();
+
     if (Nave.y > 0) {
       Nave.image = "nave-cima.png";
       Nave.y -= 20;
@@ -66,6 +49,8 @@ class Keyboard {
   }
 
   static ArrowDown() {
+    Nave.removeSpaceShip();
+
     if (Nave.y < 300) {
       Nave.image = "nave-baixo.png";
       Nave.y += 20;
@@ -73,6 +58,8 @@ class Keyboard {
   }
 
   static ArrowRight() {
+    Nave.removeSpaceShip();
+
     if (Nave.x < 691) {
       Nave.image = "nave-direita.png";
       Nave.x += 20;
@@ -80,6 +67,8 @@ class Keyboard {
   }
 
   static ArrowLeft() {
+    Nave.removeSpaceShip();
+
     if (Nave.x > 0) {
       Nave.image = "nave-esquerda.png";
       Nave.x -= 20;
@@ -119,7 +108,7 @@ class Keyboard {
 
 // ---------------------------------------------------------------------------
 //a função gameloop é chamada aqui
-
+var fps = 3;
 setInterval(() => {
   const Asteroid = new ClassAsteroid();
   Asteroid.drawAsteroid();
@@ -127,15 +116,13 @@ setInterval(() => {
   setTimeout(() => {
     Asteroid.cleanCanva();
   }, 1000);
-}, 1000);
+}, 1000 / fps);
 
 setInterval(() => {
-  Nave.removeSpaceShip();
-
   window.onkeydown = Keyboard.handleKeyDown;
 
   Nave.drawSpaceship();
-}, 100);
+}, 10);
 
 // setInterval(() => {
 // }, 10);

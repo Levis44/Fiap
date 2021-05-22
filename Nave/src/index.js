@@ -1,12 +1,16 @@
 const canvas = document.getElementById("tela");
 const ctx = canvas.getContext("2d");
 
+const faseHtml = document.getElementById("fase");
+const points = document.getElementById("pontos");
+
+const dir = "./images";
+
 class ClassNave {
   constructor() {
     this.x = 350;
     this.y = 150;
-    this.image = "nave-cima.png";
-    this.placar = 0;
+    this.image = dir + "/nave-cima.png";
     this.hit = false;
   }
 
@@ -19,22 +23,51 @@ class ClassNave {
   removeSpaceShip() {
     ctx.clearRect(this.x, this.y, 60, 60);
   }
+
+  detectColision() {
+    if (
+      this.x + 60 > Asteroid.x &&
+      this.x < Asteroid.x + 30 &&
+      this.y + 60 > Asteroid.y &&
+      this.y < Asteroid.y + 30
+    ) {
+      return true;
+    }
+
+    return false;
+  }
 }
-const Nave = new ClassNave();
 
 class ClassAsteroid {
   constructor() {
+    this.x = 0;
+    this.y = 0;
+    this.image = dir + "/asteroid.png";
+  }
+
+  random() {
     this.x = Math.floor(Math.random() * canvas.width);
     this.y = Math.floor(Math.random() * canvas.height);
   }
 
   drawAsteroid() {
-    ctx.fillStyle = "red";
-    ctx.fillRect(this.x, this.y, 30, 30);
+    const imagem = new Image();
+    imagem.src = this.image;
+    ctx.drawImage(imagem, this.x, this.y);
   }
 
   cleanCanva() {
     ctx.clearRect(this.x, this.y, 30, 30);
+  }
+
+  configAsteroid() {
+    this.random();
+
+    this.drawAsteroid();
+
+    setTimeout(() => {
+      this.cleanCanva();
+    }, 1000);
   }
 }
 
@@ -43,36 +76,45 @@ class Keyboard {
     Nave.removeSpaceShip();
 
     if (Nave.y > 0) {
-      Nave.image = "nave-cima.png";
-      Nave.y -= 20;
+      Nave.image = dir + "/nave-cima.png";
+      Nave.y -= 10 * Game.fase;
+      return true;
     }
+    return false;
   }
 
   static ArrowDown() {
     Nave.removeSpaceShip();
 
     if (Nave.y < 300) {
-      Nave.image = "nave-baixo.png";
-      Nave.y += 20;
+      Nave.image = dir + "/nave-baixo.png";
+      Nave.y += 10 * Game.fase;
+      return true;
     }
+    return false;
   }
 
   static ArrowRight() {
     Nave.removeSpaceShip();
 
     if (Nave.x < 691) {
-      Nave.image = "nave-direita.png";
-      Nave.x += 20;
+      Nave.image = dir + "/nave-direita.png";
+      Nave.x += 10 * Game.fase;
+      return true;
     }
+    return false;
   }
 
   static ArrowLeft() {
     Nave.removeSpaceShip();
 
     if (Nave.x > 0) {
-      Nave.image = "nave-esquerda.png";
-      Nave.x -= 20;
+      Nave.image = dir + "/nave-esquerda.png";
+      Nave.x -= 10 * Game.fase;
+
+      return true;
     }
+    return false;
   }
 
   static handleKeyDown(event) {
@@ -85,81 +127,76 @@ class Keyboard {
   }
 }
 
-// requestAnimationFrame(gameloop);
-// function gameloop() {
-//   if (x <= 700) {
-//     desenharQuadrado(x, y);
-//   } else {
-//     clearTimeout();
-//   }
+class Game {
+  static fase = 1;
+  static fps = this.fase / 3;
+  static points = 0;
+  static penalidade = true;
 
-//   x += 10;
-//   requestAnimationvar fps = 1;Frame(gameloop);
-// }
+  static wichFase() {
+    if (Game.points >= 100) this.fase = 2;
+    if (Game.points >= 200) this.fase = 3;
+  }
+}
 
-// function desenharQuadrado(pX, pY) {
-//   ctx.clearRect(0, 0, 800, 400);
-//   let img = new Image();
-//   img.src = "./nave.png";
+const Nave = new ClassNave();
 
-//   ctx.createPattern(img, "repeat");
-//   ctx.fillRect(pX, pY, 100, 100);
-// }
+const Asteroid = new ClassAsteroid();
 
-// ---------------------------------------------------------------------------
-//a função gameloop é chamada aqui
-var fps = 3;
-setInterval(() => {
-  const Asteroid = new ClassAsteroid();
-  Asteroid.drawAsteroid();
+const asteroidInterval = setInterval(() => {
+  Asteroid.configAsteroid();
+}, 1010);
 
-  setTimeout(() => {
-    Asteroid.cleanCanva();
-  }, 1000);
-}, 1000 / fps);
+const naveInterval = setInterval(() => {
+  putInfo();
+  if (!Nave.hit) {
+    window.onkeydown = Keyboard.handleKeyDown;
 
-setInterval(() => {
-  window.onkeydown = Keyboard.handleKeyDown;
+    const move = Nave.drawSpaceship();
 
-  Nave.drawSpaceship();
+    if (move) moveTime();
+  }
+
+  const colision = Nave.detectColision();
+
+  if (colision) {
+    gameover();
+  }
 }, 10);
 
-// setInterval(() => {
-// }, 10);
+function moveTime() {
+  Game.penalidade = false;
 
-// requestAnimationFrame(gameloop);
-// function gameloop() {
-//   window.onkeydown = Keyboard.handleKeyDown;
+  setTimeout(() => {
+    Game.penalidade = true;
+  }, 3000);
+}
 
-//   const x = Nave.x;
-//   const y = Nave.y;
-//   Nave.drawSpaceship(x, y);
+const counter = setInterval(() => {
+  Game.points += 10;
+  Game.wichFase();
+}, 1000);
 
-//   //chama novamente o ciclo da animação
-//   requestAnimationFrame(gameloop);
-// }
+const penalidade = setInterval(() => {
+  if (Game.penalidade) {
+    Game.points -= 20;
+  }
+}, 3000);
 
-// ----------------------------------------------------------------------------
-// ASTEROIDES ALEATORIOS
+function putInfo() {
+  faseHtml.innerHTML = `Fase ${Game.fase}`;
+  points.innerHTML = `Pontos: ${Game.points}`;
+}
 
-// var fps = 1 / 3;
-// var xQ, yQ;
-// function desenharQ() {
-//   setTimeout(function () {
-//     requestAnimationFrame(desenharQ);
-//     // Drawing code goes here
-//     console.log(xQ + " - " + yQ);
-//     ctx.clearRect(xQ, yQ, 30, 30);
-//     xQ = Math.floor(Math.random() * canvas.width);
-//     yQ = Math.floor(Math.random() * canvas.height);
-//     ctx.fillStyle = "red";
-//     ctx.fillRect(xQ, yQ, 30, 30);
-//   }, 1000 / fps);
-// }
-// desenharQ();
+function gameover() {
+  Nave.hit = true;
+  ctx.clearRect(0, 0, 800, 400);
 
-// ASTEROIDES ALEATORIOS
-// ----------------------------------------------------------------------------
+  ctx.font = "40px Helvetic";
 
-// Aparecer asteróide
-//
+  alert("Game Over");
+
+  clearInterval(naveInterval);
+  clearInterval(asteroidInterval);
+  clearInterval(counter);
+}
